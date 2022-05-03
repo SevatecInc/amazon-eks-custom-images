@@ -1,0 +1,71 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: calm-eks-cluster-dev
+  region: us-east-1
+  version: "1.22"
+
+vpc:
+  autoAllocateIPv6: false
+  id: "vpc-08260c36385c4651f"
+  subnets:
+    private:
+      us-east-1a:
+          id: "subnet-06941ee9ffb3301d1"
+      us-east-1b:
+          id: "subnet-014a6a77942580180"
+    public:
+      us-east-1a:
+          id: "subnet-051598af2ccbd561c"
+      us-east-1b:
+          id: "subnet-0c81a2c03a5e5de72"
+
+managedNodeGroups:
+  - name: calm-dev-ng1
+    instanceType: t2.xlarge
+    desiredCapacity: 2
+    minSize: 1
+    maxSize: 4
+    volumeIOPS: 6000
+    volumeSize: 100
+    volumeThroughput: 500
+    volumeType: gp3
+    ebsOptimized: true
+    volumeEncrypted: true
+    # Use private subnets for nodes
+    # https://eksctl.io/usage/vpc-networking/#use-private-subnets-for-initial-nodegroup
+    privateNetworking: true
+    securityGroups:
+      attachIDs: ["sg-06ee2fd60ef2dad81"]
+    ami: ami-0f173288857924d57
+    tags:
+      alpha.eksctl.io/nodegroup-name: calm-eks-dev-ng1
+      alpha.eksctl.io/nodegroup-type: managed
+    iam:
+      attachPolicyARNs: &attachPolicyARNs
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      withAddonPolicies: &withAddonPolicies
+        autoScaler: true
+        cloudWatch: true
+        ebs: true
+    # Using custom AMI images require the definition of overrideBootstrapCommand
+    # to ensure that nodes are able to join the cluster https://eksctl.io/usage/custom-ami-support/
+    overrideBootstrapCommand: |
+      #!/bin/bash
+      export CLUSTERNAME=calm-eks-cluster-dev
+      export NODEGROUP=applications
+      declare -a LABELS=(
+        eks.amazonaws.com/nodegroup="${NODEGROUP}"
+        calm-eks-cluster-dev/workload_workspace_services=true
+        calm-eks-cluster-dev/workload_workspace_regular=true
+        calm-eks-cluster-dev/workload_workspace_headless=true
+      )
+      export KUBELET_EXTRA_ARGS="$(printf -- "--max-pods=110 --node-labels=%s" $(IFS=$','; echo "${LABELS[*]}"))"
+      /etc/eks/bootstrap.sh ${CLUSTERNAME}
+    spot: false
+  
