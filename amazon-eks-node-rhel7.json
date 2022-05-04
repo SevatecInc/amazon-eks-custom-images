@@ -102,7 +102,7 @@
       "type":"shell",
       "scripts": [
         "./scripts/rhel7/boilerplate.sh",
-        "./scripts/shared/falco.sh",
+        "./scripts/rhel7/falco.sh",
         "./scripts/rhel7/nessus.sh",
         "./scripts/rhel7/trendmicro.sh"
       ],
