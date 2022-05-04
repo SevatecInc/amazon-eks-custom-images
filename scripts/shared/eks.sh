@@ -133,6 +133,10 @@ systemctl daemon-reload && systemctl disable kubelet
 ### EKS ########################################################################
 ################################################################################
 
+
+# run modprobe
+modprobe ip_tables iptable_nat iptable_mangle
+
 mkdir -p /etc/eks
 curl -sL -o /etc/eks/eni-max-pods.txt https://raw.githubusercontent.com/awslabs/amazon-eks-ami/master/files/eni-max-pods.txt
 curl -sL -o /etc/eks/bootstrap.sh https://raw.githubusercontent.com/awslabs/amazon-eks-ami/master/files/bootstrap.sh
