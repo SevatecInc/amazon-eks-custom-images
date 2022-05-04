@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum -y install epel-release
 yum -y install make dkms
 rpm --import https://falco.org/repo/falcosecurity-3672BA8F.asc
