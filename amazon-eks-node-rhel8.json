@@ -101,7 +101,7 @@
       "scripts": [
         "./scripts/rhel8/boilerplate.sh",
         "./scripts/shared/falco.sh",
-        "./scripts/shared/nessus.sh",
+        "./scripts/rhel8/nessus.sh",
         "./scripts/rhel8/trendmicro.sh"
       ],
       "environment_vars": [
