@@ -142,7 +142,8 @@
       "type":"shell",
       "scripts": [
         "./scripts/rhel7/hardening.sh",
-        "./scripts/rhel7/cleanup.sh"
+        "./scripts/rhel7/cleanup.sh",
+        "./scripts/shared/firewalld.sh"
       ],
       "environment_vars": [
         "HTTP_PROXY={{user `http_proxy`}}",
