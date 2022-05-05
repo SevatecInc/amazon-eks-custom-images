@@ -20,7 +20,7 @@
     "source_ami_owner_govcloud":"219670896067",
     "source_ami_ssh_user":"ec2-user",
     "source_ami_arch":"x86_64",
-    "source_ami_name":"RHEL-8*_HVM-*-x86_64-0-Hourly2-GP2",
+    "source_ami_name":"RHEL-8.4.0_HVM-*-x86_64-0-Hourly2-GP2",
     "target_ami_name": "stackarmor-amazon-eks-node-{{user `eks_version`}}-rhel8-{{ timestamp }}"
   },
   "builders":[

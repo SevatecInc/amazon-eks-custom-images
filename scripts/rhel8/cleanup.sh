@@ -35,3 +35,7 @@ rm -rf \
     /var/log/wtmp
 
 touch /etc/machine-id
+
+# run modprobe
+modprobe ip_tables iptable_nat iptable_mangle
+
